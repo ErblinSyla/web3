@@ -1,25 +1,22 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { ThirdwebProvider } from "thirdweb/react";
+'use client';
 
-const inter = Inter({ subsets: ["latin"] });
+import { Inter } from 'next/font/google';
+import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { ZMainnet } from '@thirdweb-dev/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export const metadata: Metadata = {
-  title: "thirdweb SDK + Next starter",
-  description:
-    "Starter template for using thirdweb SDK with Next.js App router",
-};
+const inter = Inter({ subsets: ['latin'] });
+const queryClient = new QueryClient();
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThirdwebProvider>{children}</ThirdwebProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThirdwebProvider activeChain={ZMainnet}>
+            {children}
+          </ThirdwebProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
